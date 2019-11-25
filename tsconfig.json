@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
         "outDir": "./dist/",
         "sourceMap": true,
         "strict": true,
@@ -7,14 +8,17 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": false,
-        "module": "es2015",
+        "module": "esnext",
         "moduleResolution": "node",
         "target": "es5",
         "lib": [
             "dom",
             "es5",
             "es2015.promise"
-        ]
+        ],
+        "paths": {
+            "myAlias/*": ["./*"]
+        }
     },
     "include": [
         "./src/**/*"

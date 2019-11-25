@@ -1,6 +1,9 @@
 <template>
 <div>
-    COUCOU
+    <button @click="load">
+        Load my chunk
+    </button>
+    <chunk v-if="booleanComponent" />
 </div>
 </template>
 

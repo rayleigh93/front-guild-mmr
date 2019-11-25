@@ -1,9 +1,18 @@
 const path = require("path")
 const webpack = require("webpack")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+// Get variable ENV, prod or dev
+const env = process.env.NODE_ENV
 
 const config = {
     // La ou vas commencer mon webpack
-    entry: "./src/index.ts",
+    entry: {
+        // Avec un [name], on aura donc [name] = 'myApp'
+        myApp: [
+            "./src/css/myCss.css",
+            "./src/index.ts",
+        ],
+    },
     // C'est ma sortie
     output: {
         // Chemin de sortie
@@ -21,24 +30,47 @@ const config = {
         alias: {
             // In this case, we’re aliasing the package vue to vue/dist/vue.esm.js, which provides Vue in ES2017 Module format.
             'vue$': 'vue/dist/vue.esm.js',
+            // My alias, don't forget to add it into the ts config !
+            'myAlias': path.resolve(__dirname),
           }
     },
     // Loader a utiliser
     module: {
         rules: [{
-            // Si le fichier termine par .vue, alors utilise le "vue-loader"
-            test: /\.tsx?$/,
-            loader: "ts-loader",
-            exclude: /node_modules/,
-            options: {
-                // Permet de dire au ts-loader : "si tu vois un .vue, prends le comme un fichier .ts"
-              appendTsSuffixTo: [/\.vue$/]
-            }
-        }, {
-            test: /\.vue$/,
-            loader: "vue-loader",
-        }]
+                test: /\.css$/,
+                use: [
+                    !!env && env === "prod" ? MiniCssExtractPlugin.loader : "vue-style-loader",
+                    'css-loader'
+                ],
+            }, {
+                // Si le fichier termine par .ts, alors utilise le "ts-loader"
+                test: /\.tsx?$/,
+                loader: "ts-loader",
+                exclude: /node_modules/,
+                options: {
+                    // Permet de dire au ts-loader : "si tu vois un .vue, prends le comme un fichier .ts"
+                    appendTsSuffixTo: [/\.vue$/]
+                }
+            }, {
+                test: /\.vue$/,
+                loader: "vue-loader",
+            }, {
+                test: /\.(png|jpg|gif|svg)$/,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]?[hash]'
+                }
+            }, {
+                test: /\.(eot|svg|ttf|woff|woff2)$/,
+                loader: 'url-loader'
+            }]
     },
+    plugins: [
+        new MiniCssExtractPlugin({
+            // Normalement ici on aura myApp.css
+            filename: "[name].css",
+        })
+    ],
     // Info pour start serv dev de webpack
     devServer: {
         noInfo: false, // Vire les infos ou non 
