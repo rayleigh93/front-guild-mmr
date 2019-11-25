@@ -1,6 +1,9 @@
 const path = require("path")
 const webpack = require("webpack")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const ManifestPlugin = require("webpack-manifest-plugin")
+const CleanWebpackPlugin = require("clean-webpack-plugin")
+
 // Get variable ENV, prod or dev
 const env = process.env.NODE_ENV
 
@@ -21,6 +24,7 @@ const config = {
         publicPath: "/dist",
         // Nomn du fichier en sortie
         filename: "index.js"
+        // filename: "index.[chunkhash:8].js"
     },
     // Chemin a resoudre
     // The resolve object allows you to configure how webpack’s module resolution works
@@ -64,12 +68,17 @@ const config = {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
                 loader: 'url-loader'
             }]
-    },
+    }, 
     plugins: [
         new MiniCssExtractPlugin({
             // Normalement ici on aura myApp.css
             filename: "[name].css",
-        })
+            // filename: "[name].[contenthash:8].css",
+        }),
+        // Generate Manifest for Hash
+        // new ManifestPlugin(),
+        // For delete useless bundle
+        // new CleanWebpackPlugin(),
     ],
     // Info pour start serv dev de webpack
     devServer: {

@@ -1,7 +1,7 @@
 <template>
 <div>
     <button @click="load">
-        Load my chunk
+        Load my chunk !!
     </button>
     <chunk v-if="booleanComponent" />
 </div>
