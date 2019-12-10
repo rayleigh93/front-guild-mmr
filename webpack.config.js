@@ -3,6 +3,7 @@ const webpack = require("webpack")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const ManifestPlugin = require("webpack-manifest-plugin")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
+const WebpackAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 
 // Get variable ENV, prod or dev
 const env = process.env.NODE_ENV
@@ -43,7 +44,7 @@ const config = {
         rules: [{
                 test: /\.css$/,
                 use: [
-                    !!env && env === "prod" ? MiniCssExtractPlugin.loader : "vue-style-loader",
+                    (!!env && env === "prod") ? MiniCssExtractPlugin.loader : "vue-style-loader",
                     'css-loader'
                 ],
             }, {
@@ -71,9 +72,12 @@ const config = {
     }, 
     plugins: [
         new MiniCssExtractPlugin({
-            // Normalement ici on aura myApp.css
-            filename: "[name].css",
+            // Normalement ici on aura myCss.css
+            filename: "myCss.css",
             // filename: "[name].[contenthash:8].css",
+        }),
+        new WebpackAnalyzerPlugin({
+            openAnalyzer: false,
         }),
         // Generate Manifest for Hash
         // new ManifestPlugin(),

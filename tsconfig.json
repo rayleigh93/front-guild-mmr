@@ -16,6 +16,7 @@
             "es5",
             "es2015.promise"
         ],
+        // Pour les alias TS, ne pas oublier :) 
         "paths": {
             "myAlias/*": ["./*"]
         }
